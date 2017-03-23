@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div id="app">
+
+			<div class="list-group">
+				<router-link to="/home">Go to Home</router-link>
+				<router-link to="/about">Go to About</router-link>
+			</div>
+
+			<router-view></router-view>
+		</div>
+
+		<template id="home">
+			<div> 
+			<div>
+				<h1>Home</h1>
+				<p>{{msg}}</p>
+			</div>
+			<div>
+				<router-link to="/home/news">News</router-link>
+				<router-link to="/home/message">Messages</router-link>
+			</div>
+			<router-view></router-view>
+			</div>
+		</template>
+
+		<template id="news">
+			<ul>
+				<li>News 01</li>
+				<li>News 02</li>
+				<li>News 03</li>
+			</ul>
+		</template>
+		<template id="message">
+			<ul>
+				<li>Message 01</li>
+				<li>Message 02</li>
+				<li>Message 03</li>
+			</ul>
+		</template>
+
+		<template id="about">
+			<div>
+				<h1>About</h1>
+				<p>This is the tutorial about vue-router.</p>
+			</div>
+		</template>
+
+	</body>
+	<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/vue2.0.js"></script>
+	<script src="lib/vue-router.min.js"></script>
+	<script>
+		var Home = Vue.extend({
+			template: '#home',
+			data: function() {
+				return {
+					msg: 'Hello, vue router!'
+				}
+			}
+		})
+
+		var News = Vue.extend({
+			template: '#news'
+		})
+
+		var Message = Vue.extend({
+			template: '#message'
+		})
+
+		var About = Vue.extend({
+			template: '#about'
+		})
+
+		var router = new VueRouter({
+			routes: [
+				{
+					path: "/home",
+					component: Home,
+					//子路由
+					children: [{
+						path: "news",
+						component: News
+					}, {
+						path: "message",
+						component: Message
+					}]
+				}, {
+					path: '/about',
+					component: About
+				},
+				{
+					path: '/',
+					component: Home
+				}
+			]
+		})
+
+		const vm = new Vue({
+			router: router
+		}).$mount('#app');
+	</script>
+
+</html>
