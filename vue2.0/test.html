@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<router-link to="/home">home</router-link>
+			<router-link to="/me">me</router-link>		
+			<router-view></router-view>
+		</div>
+		<template id="home">
+			<div> 
+				this is a home!
+			<ul>
+				<li>
+					<router-link to="/home/news">news</router-link>
+				</li>
+				<li><router-link to="/home/change">change</router-link></li>
+			</ul>
+			<router-view></router-view>
+			</div>
+		</template>
+		<template id="me">
+			<p>{{message}} </p>
+		</template>
+		<template id="news">
+			<div style="width: 10px;height: 10px;background: gray;"></div>
+		</template>
+		<template id="change">
+			<ol>
+				<li>aaa</li>
+				<li>bbb</li>
+				<li>ccc</li>
+			</ol>
+		</template>
+		
+	</body>
+	<script src="lib/vue2.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/vue-router.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var Home = Vue.extend({
+			template:"#home"
+		})
+		var News = Vue.extend({
+			template:"#news"
+		})
+		var change = Vue.extend({
+			template:"#change"
+		})
+		var Me = Vue.extend({
+			template:"#me",
+			data:function(){
+				return{message: "this is me!"}
+			}
+			
+		})
+		
+		var router = new VueRouter({
+			routes:[
+			{path:'/home',component:Home,
+				children:[//子路由
+				{path:'news',component:News},
+				{path:'change',component:change}				
+				]
+			
+			},
+			{path:'/me',component:Me},
+			{path:'/',component:Me}
+			
+			]
+		})
+		var vue = new Vue({
+			router:router
+		}).$mount("#app")	
+		
+		
+	</script>
+
+
+
+
+</html>
+
+<!--
+	常见错误：
+	1、<template>标签里不能直接写{{mes}}或者文本 要嵌套在其它标签里
+	2、定义router路径时 要注意是routes
+	3、定义子路由时，path:"" 直接写当前路径 不用再写父级路径和/ eg:"news"
+	4、直接挂载根实例$mount("#app")	
+-->
